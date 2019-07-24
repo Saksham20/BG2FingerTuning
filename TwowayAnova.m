@@ -1,4 +1,4 @@
-function [sig_out,chan_stats,normality_result,levine_out] = TwowayAnova(AllData_indi_blknorm,avg_window)
+function [sig_out,chan_stats,normality_resultsw,normality_resultqq,levine_out] = TwowayAnova(AllData_indi_blknorm,avg_window)
 
 
 
@@ -31,13 +31,14 @@ data=reshape(data(~isnan(data)),[],sz_data(4),1);
 anova_pvals=zeros(3,sz(1));
 chan_stats=cell(sz(1),1);
 
-normality_result=zeros(length(unique(group_labelAll)),sz(1));% since there are two groups here: X1 and X2
+normality_resultsw=zeros(length(unique(group_labelAll)),sz(1));% since there are two groups here: X1 and X2
+normality_resultqq=zeros(length(unique(group_labelAll)),sz(1));
 levine_out=zeros(1,sz(1));
 
 for chanos=1:sz(1)
     [anova_pvals(:,chanos),~,chan_stats{chanos,1}]=anovan(data(:,chanos),{group_labels1,group_labels2},...
         'model',[1 0;0 1;1 1],'display','off','varnames',{'flext','fingers'});
-    [normality_result(:,chanos),~,levine_out(1,chanos)] = AnovaAssumptionTester(data(:,chanos),group_labelAll);
+    [normality_resultsw(:,chanos),normality_resultqq(:,chanos),~,levine_out(1,chanos)] = AnovaAssumptionTester(data(:,chanos),group_labelAll);
 end
 chanlist=1:sz(1);
 sig_flext=chanlist(anova_pvals(1,:)<0.05);

@@ -1,0 +1,6 @@
+*.asv
+*.mat
+*.zip
+*.txt
+/figures
+/MATfiles
