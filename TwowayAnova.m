@@ -1,13 +1,30 @@
-function [sig_out,chan_stats,normality_resultsw,normality_resultqq,levine_out] = TwowayAnova(AllData_indi_blknorm,avg_window)
+function [sig_out,chan_stats,normality_resultsw,normality_resultqq,levine_out] = TwowayAnova(AllData_indi_blknorm,AllData_indi_blknorm_prereach, avg_window)
 
 
 
 %% Compatible data format creation: 
-% from size of AllDAta, to no_trials X dim(2)(fingers) X dim(3)(flext) X no_chans
+%AllData size = nochans X dim(2)(fingers) X dim(3)(flext) X trl_time X noTrials 
+% from size of AllDAta, to no_trials X dim(3)(flext) X dim(2)(fingers) X
+% no_chans 
+transform=true; 
 sz=size(AllData_indi_blknorm);
 data=nanmean(AllData_indi_blknorm(:,:,:,[1:avg_window/20],:),4); 
+predata=nanmean(AllData_indi_blknorm_prereach,4);
+data=data-predata;% to find the percentage deviation from the prereach baseline activity.. 
 data=permute(data,[5 3 2 1 4]);
 sz_data=size(data);
+
+%transform data to make it more normal:-----------------
+if transform
+    data=data+abs(min(data(:)))+1;% making all data positive for the transformation. 
+    data=1./(data); % inverse / log / sqrt
+end
+
+% trimming data:------------------
+
+data=normTrim(data,1,20, 'remove');
+
+
 
 %generating grouping variables------------
 group_labels1=1:sz_data(2);
