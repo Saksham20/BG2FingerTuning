@@ -2,5 +2,6 @@
 *.mat
 *.zip
 *.txt
+*.csv
 /figures
 /MATfiles

@@ -31,5 +31,6 @@ samplesize=[5:5:60, 75 100 450 200 300]';
 eval(sprintf('label=%s;',label{find(gdalpha)}));
 Sig_CC=interp1(samplesize,label,(segments));
 Sig=Sig_CC<=CC(2,1); 
+CC=CC(2,1);
 end
 

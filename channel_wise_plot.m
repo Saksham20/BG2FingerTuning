@@ -2,7 +2,7 @@ function []= channel_wise_plot(AllData_indi_blknorm,AllData_indi_blknorm_prereac
 
 %global sessnos noblks_max notrials_max trltime_max pretrltime_max OL_blocks_new sessionList sessnames 
 median=false;
-currdir='session1_channel_wise\';
+currdir='session1_channel_wise\baseSubtracted\';
     %% 2) Channel wise : 
     
     finglist={'index','TRP','Thumb(F-E)','Thumb(Ab-Ad)'};movementlist={'flex','ext'};

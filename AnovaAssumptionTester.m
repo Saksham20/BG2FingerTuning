@@ -1,4 +1,4 @@
-function [normality_resultsw,normality_resultqq,sample_sizes,levine_out] = AnovaAssumptionTester(Data,group_labels)
+function [normality_resultsw,normality_resultqq,CC,sample_sizes,levine_out] = AnovaAssumptionTester(Data,group_labels)
 warning off stats:adtest:OutOfRangePLow
 warning off stats:adtest:OutOfRangePHigh
 % this code will test for the validity of the standard assumptions for every group made in
@@ -15,10 +15,11 @@ no_groups=numel(unique(group_labels));
 %% testing for normality: 
 normality_resultsw=zeros(no_groups,1);
 normality_resultqq=zeros(no_groups,1);
+CC=zeros(no_groups,1);
 for grpno=1:no_groups
     %normality_result(grpno,1)=adtest(Data(group_labels==grpno));
     normality_resultsw(grpno,1)=swtest(Data(group_labels==grpno));%shapiro-wilk test
-    normality_resultqq(grpno,1)=QQplotCC(Data(group_labels==grpno),0.05);
+    [normality_resultqq(grpno,1),CC(grpno,1),~]=QQplotCC(Data(group_labels==grpno),0.01);
 end
 
 %% sample size: 
